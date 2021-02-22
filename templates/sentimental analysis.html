@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sentimental Analysis of twitter data</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+	
+	<style>
+	.bg-dark {
+		background-color: #42678c!important;
+	}
+	#result {
+		color: #0a1c4ed1;
+	}
+	
+	h3.weight{
+
+    	font-family:Arial,Helvetica,sans-serif;
+    	font-weight: bold;
+	}
+	
+	p.weight{
+
+    	font-family:Arial,Helvetica,sans-serif;
+    	
+	}
+	
+        .img-preview {
+    width: 286px;
+    height: 286px;
+     position:relative;
+    left: 450px;
+    border: 5px solid #F8F8F8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    margin-top: 1em;
+    margin-bottom: 1em;    
+}
+
+section{
+
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-image: url('https://www.siliconrepublic.com/wp-content/uploads/2019/07/AdobeStock_193193380-718x523.jpeg');
+   background-attachment: fixed;
+   height: 230vh;
+ 
+
+
+}
+        
+
+section .descript{
+
+    position: relative;
+    max-width:800px;
+    left:200px;
+    height:600px;
+    padding: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    overflow: hidden;
+    color:#000; 
+}
+
+section .descript:before{
+
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px; 
+    background: #333;
+    background-attachment: fixed;
+    opacity: 0.6;
+   
+}
+
+section .descript h3{
+    position:relative;
+    margin: 0 0 20px;
+    padding: 0;
+    font-size: 30px;
+    text-transform: uppercase;
+    z-index:2;
+      color: white;
+    
+}
+
+section .descript p{
+
+    position:relative;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    z-index:2;
+      color: white;
+    
+}
+
+
+section .upload{
+    margin: 20;
+    display:inline-block;
+    position:relative;
+    left: 180px;
+    align-items: center;
+    width:500px;
+    height:200px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    color:#000; 
+    z-index: 2;
+    
+
+}
+
+section .upload h1{
+
+
+     position:relative;
+    margin: 0 0 20px;
+    padding: 0;
+    font-size: 20px; 
+     
+    z-index:2;
+      color: white;
+}
+
+section .upload:before{
+
+    content: '';
+    margin: 20px;
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px; 
+    background: #333;
+    background-attachment: fixed;
+    opacity: 0.4;
+   
+}
+
+section .predict{
+        position: relative;
+    left:450px;
+
+}
+
+.img-preview > div {
+    width: 100%;
+    height: 100%;
+    background-size: 256px 256px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+
+
+.upload-label{
+    display: inline-block;
+    padding: 12px 30px;    
+     position:relative;
+    left: 500px;
+    background: #fff;
+    color: #000000;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.upload-label:hover{
+    background: black;
+    color: #f3f3f3;
+       
+}
+
+section .loader {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    position: relative;
+    left:450px;
+    width: 100px;
+    height: 50px;
+    animation: spin 5s linear infinite;
+
+}
+
+  
+	</style>
+	
+</head>
+
+<body>
+
+    <!NAV BAR CONTAINING THE HEADING>
+    <nav class="navbar navbar-dark bg-dark sticky-top" >
+        <div class="container">
+            <a class="navbar-brand" href="#"><b>SENTIMENTAL ANALYSIS OF TWITTER DATA - DEEP LEARNING</b></a>
+        </div>
+    </nav>
+
+<section>
+    <div class="box">
+    <div class="container">
+        <div id="content" style="margin-top:2em">
+		<div class="container">
+		  <div class="row">
+			<div class="descript" >
+			  <h3 class="weight">TYPE THE TWEET BELOW WHICH YOU WANT TO KNOW THE SENTIMENT!   </h3>
+			  <br>
+			  <p class="weight">
+                
+                      <img src="https://logodownload.org/wp-content/uploads/2014/09/twitter-logo-1-1.png" height="200px" width="200px">
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <img src="https://i.pinimg.com/originals/6c/aa/38/6caa38a6954ef94b5d2f72da66f94335.png" height="180px" width="180px">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <img src="https://images-na.ssl-images-amazon.com/images/I/711NDQNFqxL.png" height="170px" width="170px">
+                  <br>
+                   <b> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; positive tweets
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    negative tweets</b>
+                    <br>
+                    <br>
+                  
+                  Twitter is popular nowadays to express opinions about different topics such as products,movies
+                   music, politicians, Social events and so on with the help of tweets and sentimental analysis model.
+                   This page aims to determine the sentiment which you typed and it classifies tweets as positive/negative.
+                    <br>
+                    
+                   
+                </p>
+                
+        
+			</div>
+              <div>
+               <br>
+                <br>
+                
+      
+                <div class="form">
+                
+			<form action="{{ url_for('y_predict')}}" method="post">
+			
+				<p><input type="text" class= "btn" name="Message" placeholder="Enter your message"  required="required" size="1000" width="48" height="48" /></p>
+				
+				<button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
+			</form>
+			
+            <div class="result">
+                {% if err|length %}
+		    <h2 style="color:#fff;"> Error : {{ err }} </h2>
+		{% else %}
+		    <img width="250" height="250" src="{{ result }}" alt="result">
+		{% endif %}
+	   </div>
+     
+      
+                  </div>
+			<div>
+				<div class="align">
+                    
+				 <div class="upload"> <h1>Project Done by <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.S.BALA SUJITH KUMAR(URK17CS186)<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.KATTA PREM(URK17CS307)</h1>   
+                    
+                
+                    </div>
+			 <br>
+                     <br>
+                    
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="data:image/jpeg;base64,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" height="100px" width="100px">
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="" height="80px" width="135px">
+                    <br>
+                
+		</div>
+			</div>
+			 
+		  </div>
+		</div>
+		</div>
+    </div>
+    </div>
+    </section>
+</body>
+
+
+
+</html>
